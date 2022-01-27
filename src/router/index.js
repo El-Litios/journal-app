@@ -1,5 +1,6 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
 import Home from '../views/Home.vue'
+import DaybookRoutes from '../modules/daybook/router/index'
 
 const routes = [
   {
@@ -7,7 +8,10 @@ const routes = [
     name: 'Home',
     component: Home
   },
-  
+  {
+    path: '/daybook',
+    ...DaybookRoutes 
+  }
 ]
 
 const router = createRouter({
