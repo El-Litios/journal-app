@@ -2,10 +2,10 @@
   <div class="home">
     <img alt="Vue logo" src="../assets/logo.png">
     <h1>Hola mundo</h1>
-    <button class="btn btn-success">A</button>
-    <button class="btn btn-primary">B</button>
-    <button class="btn btn-danger">C</button>
-    <button class="btn btn-darker">C</button>
+    <button @click="GoToDayBook" class="btn btn-success">A</button>
+    <button @click="GoToDayBook" class="btn btn-primary">B</button>
+    <button @click="GoToDayBook" class="btn btn-danger">C</button>
+    <button @click="GoToDayBook" class="btn btn-darker">C</button>
   </div>
 </template>
 
@@ -16,6 +16,11 @@ export default {
   name: 'Home',
   components: {
     
+  },
+  methods: {
+    GoToDayBook(){
+      this.$router.push({ name: 'No-entry' })
+    }
   }
 }
 </script>
