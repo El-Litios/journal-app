@@ -27,14 +27,14 @@
         </div>
     </template>
 
-    <FabButton icon="fa-save"/>
+    <FabButton icon="fa-save" @click="saveEntry()" />
 
     <img src="https://www.xtrafondos.com/wallpapers/paisaje-digital-en-atardecer-5846.jpg" alt="entry-img" class="img-thumbnail">
 </template>
 
 <script>
 import { defineAsyncComponent } from 'vue'
-import { mapGetters } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 
 import getDateEntry from '../helpers/getDateEntry'
 
@@ -57,11 +57,18 @@ export default {
     },
 
     methods: {
+        ...mapActions('journal', ['updateEntry']),
+
         loadEntry(){
             const entry = this.getEntriesById( this.id )
             if (!entry) return this.$router.push( { name: 'No-entry' } )
             this.entry = entry
-        }
+        },
+
+        async saveEntry(){
+            this.updateEntry( this.entry )
+        },
+
     },
 
     computed: {
