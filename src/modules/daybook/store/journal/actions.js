@@ -22,11 +22,22 @@ export const updateEntry = async ( {commit} ,  entry) =>  {
 
     const res = await journal.put(`/entries/${entry.id}.json`, dataToSave)
     console.log(res);
+    console.log({...entry});
 
     commit('updateEntry', {...entry})
 } 
 
 
-export const createEntry = async (/* {commit} */) => {
+export const createEntry = async ({commit}, entry) => {
 
+    const { date, picture, text } = entry
+
+    const dataToSave = { date, picture, text }
+
+    const {data} = await journal.post(`/entries.json`, dataToSave)
+    dataToSave.id = data.name
+
+    commit('addEntry', dataToSave)
+
+    return data.name
 } 
