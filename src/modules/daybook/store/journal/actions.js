@@ -3,6 +3,9 @@ import journal from "@/api/journal"
 
 export const laodEntries = async ({commit} ) => {
     const { data } = await journal.get('/entries.json')
+
+    if (!data) return commit('setEntries', [])
+
     const entries = []
     for(let id of Object.keys(data)){
         entries.push({
@@ -41,3 +44,12 @@ export const createEntry = async ({commit}, entry) => {
 
     return data.name
 } 
+
+export const deleteEntry = async ({commit}, entryId) => {
+
+    await journal.delete(`/entries/${entryId}.json`)
+
+    commit('deleteEntry', entryId)
+
+    return entryId
+}
