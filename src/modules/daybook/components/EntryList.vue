@@ -4,6 +4,12 @@
       <input type="text" name="" id="" class="form-control" placeholder="Buscar" v-model="term">
     </div>
 
+    <div class="mt-2 d-flex flex-column">
+      <button class="btn btn-primary mx-5" @click="$router.push({ name: 'Entry', params: { id: 'new'} })">
+        <i class="fa fa-plus"></i>
+      </button>
+    </div>
+
     <div class="entry-scrollarea">
       <Entry v-for="entry in searchEntryByTerm" :key="entry.id" :entry="entry"/>
     </div>
