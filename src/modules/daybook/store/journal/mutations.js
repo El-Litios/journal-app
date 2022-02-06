@@ -11,6 +11,6 @@ export const updateEntry =  (state, payload) => {
     state.entries[idIndex] = payload
 } 
 
-export const addEntry =  (/* state */) => {
-    
+export const addEntry =  ( state, payload ) => {
+    state.entries = [ payload, ...state.entries ]
 } 
