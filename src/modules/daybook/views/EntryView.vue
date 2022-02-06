@@ -57,16 +57,34 @@ export default {
     },
 
     methods: {
-        ...mapActions('journal', ['updateEntry']),
+        ...mapActions('journal', ['updateEntry', 'createEntry']),
 
         loadEntry(){
-            const entry = this.getEntriesById( this.id )
-            if (!entry) return this.$router.push( { name: 'No-entry' } )
+            let entry;
+            
+            if (this.id === 'new') {
+                entry = {
+                    text: '',
+                    date: new Date().getTime()
+                }       
+            }else{
+                entry = this.getEntriesById( this.id )
+                if (!entry) return this.$router.push( { name: 'No-entry' } )
+            }
+           
             this.entry = entry
         },
 
         async saveEntry(){
-            this.updateEntry( this.entry )
+
+            if (this.entry.id) {
+               await this.updateEntry( this.entry )
+            } else {
+               const id = await this.createEntry(this.entry)
+               this.$router.push( { name: 'Entry', params: { id }} )
+            }
+
+            
         },
 
     },
