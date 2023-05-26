@@ -57,9 +57,9 @@ export default {
     const { createUser } = useAuth();
 
     const userForm = ref({
-      name: "",
-      email: "",
-      password: "",
+      name: "Carlos",
+      email: "carlos@gmail.com",
+      password: "123456",
     });
 
     return {
