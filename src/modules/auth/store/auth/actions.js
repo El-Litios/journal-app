@@ -1,20 +1,15 @@
 import { auth } from "@/api/auth";
-import { createUserWithEmailAndPassword } from "firebase/auth";
+import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 
 export const createUser = async ({ commit }, user) => {
-  const { email, password } = user;
-  try {
-    createUserWithEmailAndPassword(auth, email, password).then((res) => {
-      console.log(res);
-      commit();
+  const { name, email, password } = user;
+  createUserWithEmailAndPassword(auth, email, password)
+    .then(({user}) => {
+      console.log(user);
+      updateProfile(user, { displayName: name });
+      commit('loginUser', user);
     })
     .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        console.log(errorCode);
-        console.log(errorMessage);
-      })
-  } catch (error) {
-    console.log('error aaaaa',error.reponse);
-  }
+      console.log(error);
+    });
 };
