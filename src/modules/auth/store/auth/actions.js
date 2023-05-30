@@ -3,13 +3,20 @@ import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 
 export const createUser = async ({ commit }, user) => {
   const { name, email, password } = user;
-  createUserWithEmailAndPassword(auth, email, password)
-    .then(({user}) => {
-      console.log(user);
-      updateProfile(user, { displayName: name });
-      commit('loginUser', user);
-    })
-    .catch((error) => {
-      console.log(error);
+  try {
+    const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+    const user = userCredential.user;
+
+    await updateProfile(user, {
+      displayName: name
     });
+
+    commit('loginUser', user); // Actualiza el estado del usuario en Vuex
+
+
+    return {ok: true, message: 'Usuario Creado'}
+  } catch (error) {
+    console.log(error.code);
+    return {ok: false, message: error.code}
+  }
 };
