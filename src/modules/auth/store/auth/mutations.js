@@ -4,7 +4,10 @@ export const loginUser =  (state, user) => {
         localStorage.setItem('refreshToken', user.stsTokenManager.refreshToken)
         state.idToken = user.stsTokenManager.accessToken
         state.refreshToken = user.stsTokenManager.refreshToken
-        state.user = user
+        state.user = {
+            email: user.email,
+            name: user.displayName
+        }
         state.status = 'authenticated'
     }
 } 
