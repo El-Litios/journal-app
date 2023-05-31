@@ -32,3 +32,30 @@ export const signInUser = async ({commit}, user) => {
     return {ok: false, message: error.code}
   }
 };
+
+export const checkAuthenticationToken = async ({commit}) => {
+  const idToken = localStorage.getItem('idToken')
+  //const refreshToken = localStorage.getItem('refreshToken')
+  if (!idToken) {
+    commit('logout')
+    
+  }
+  try {
+    return new Promise((resolve, reject) => {
+      const unsubscribe = auth.onAuthStateChanged(
+        (user) => {
+          commit('loginUser', user);
+          unsubscribe(); // Detener la escucha de cambios
+          resolve(user);
+        },
+        (error) => {
+          commit('logout')
+          reject(error);
+        }
+      );
+    });
+  } catch (error) {
+    commit('logout')
+    throw error;
+  }
+};
