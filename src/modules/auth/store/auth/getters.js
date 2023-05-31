@@ -1,3 +1,3 @@
-/* export const Getters =  (state) => {
-    return state.something
-} */
+export const currentUserState = (state) => {
+    return state.status
+} 
