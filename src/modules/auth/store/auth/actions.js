@@ -1,5 +1,5 @@
 import { auth } from "@/api/auth";
-import { createUserWithEmailAndPassword, updateProfile, signInWithEmailAndPassword } from "firebase/auth";
+import { createUserWithEmailAndPassword, updateProfile, signInWithEmailAndPassword, onAuthStateChanged } from "firebase/auth";
 
 export const createUser = async ({ commit }, user) => {
   const { name, email, password } = user;
@@ -37,25 +37,22 @@ export const checkAuthenticationToken = async ({commit}) => {
   const idToken = localStorage.getItem('idToken')
   //const refreshToken = localStorage.getItem('refreshToken')
   if (!idToken) {
-    commit('logout')
-    
+    commit('logoutUser')
+    console.log('no hay token');
+    return {ok: false, message: 'No token activo'}
   }
   try {
-    return new Promise((resolve, reject) => {
-      const unsubscribe = auth.onAuthStateChanged(
-        (user) => {
-          commit('loginUser', user);
-          unsubscribe(); // Detener la escucha de cambios
-          resolve(user);
-        },
-        (error) => {
-          commit('logout')
-          reject(error);
-        }
-      );
+    let result = { ok: false }
+    await onAuthStateChanged(auth, (user) => {
+      if (user) {
+        commit('loginUser', user);
+        console.log('hay user');
+        result = { ok: true }
+      } 
     });
+    return Promise.resolve(result);
   } catch (error) {
-    commit('logout')
+    commit('logoutUser')
     throw error;
   }
 };
