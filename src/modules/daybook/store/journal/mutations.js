@@ -18,3 +18,7 @@ export const addEntry =  ( state, payload ) => {
 export const deleteEntry = (state, payload) => {
     state.entries = state.entries.filter(e => e.id !== payload)
 }
+
+export const clearEntries = (state) => {
+    state.entries = []
+}
